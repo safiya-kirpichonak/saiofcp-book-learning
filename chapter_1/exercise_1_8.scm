@@ -1,10 +1,10 @@
 (define (improve guess x)
     (/ 
-        (+ 
-            guess 
-            (/ x guess)
-        ) 
-        2.0
+        (+
+            (/ x (* guess guess))
+            (* 2 guess)
+        )
+        3.0
     )
 )
 
@@ -36,10 +36,7 @@
 )
 
 (newline)
-(display (sqrt 9))
+(display (sqrt 27))
 (newline)
-(display (sqrt 2))
+(display (sqrt 8))
 (newline)
-(display (sqrt 0.0004))
-(newline)
-(display (sqrt 1000000))
