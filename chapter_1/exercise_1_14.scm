@@ -1,5 +1,6 @@
 #|
 1. The tree:
+Answer: 4
 
 cc (11, 5)
 |         \
