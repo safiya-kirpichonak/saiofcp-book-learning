@@ -28,8 +28,9 @@ than first version of algorithm.
 2. If not, what is the observed speed ratio of the two algorithms, and how 
 do you explain it differs from 2?
 
-
-
+The observed speedup ratio is between 2.5 and 3.0. This deviation from the
+expected twofold speedup can be attributed to additional operations or overhead
+that are not evenly distributed in both versions of the algorithm.
 |#
 
 (define (smallest-divisor n) 
