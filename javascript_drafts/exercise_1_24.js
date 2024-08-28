@@ -1,23 +1,34 @@
-function smallestDivisor(n) {
-  return findDivisor(n, 2);
-}
-
-function findDivisor(n, testDivisor) {
-  if (testDivisor * testDivisor > n) {
-    return n;
-  } else if (divides(testDivisor, n)) {
-    return testDivisor;
+function expmod(base, exp, mod) {
+  if (exp === 0) {
+    return 1;
+  } else if (exp % 2 === 0) {
+    const halfExp = expmod(base, exp / 2, mod);
+    return (halfExp * halfExp) % mod;
   } else {
-    return findDivisor(n, testDivisor + 1);
+    return (base * expmod(base, exp - 1, mod)) % mod;
   }
 }
 
-function divides(a, b) {
-  return b % a === 0;
+function fermatTest(n) {
+  function tryIt(a) {
+    return expmod(a, n, n) === a;
+  }
+  const a = 1 + Math.floor(Math.random() * (n - 1));
+  return tryIt(a);
+}
+
+function fastPrime(n, times) {
+  if (times === 0) {
+    return true;
+  } else if (fermatTest(n)) {
+    return fastPrime(n, times - 1);
+  } else {
+    return false;
+  }
 }
 
 function isPrime(n) {
-  return n === smallestDivisor(n);
+  return fastPrime(n, 10);
 }
 
 function timedPrimeTest(n) {

@@ -1,27 +1,52 @@
+#|
+1000000007 *** 0.
+1000000009 *** 0.
+1000000021 *** 0.
+1000000033 *** 0.
+1000000087 *** 0.
+1000000093 *** 0.
+1000000097 *** 0.
 
-(define (smallest-divisor n) 
-    (find-divisor n 2)
-)
+10000000019 *** 0.
+10000000033 *** 0.
+10000000061 *** 0.
+10000000069 *** 0.
+10000000097 *** 0.
 
-(define (find-divisor n test-divisor) 
-    (cond ((> (square test-divisor) n) n)
-          ((divides? test-divisor n) test-divisor) 
-          (else (find-divisor n (+ test-divisor 1)))
-    )
-)
+100000000003 *** 0.
+100000000019 *** 0.
+100000000057 *** 0.
+100000000063 *** 0.
+100000000069 *** 0.
+100000000073 *** 0.
+100000000091 *** .01
 
-(define (divides? a b) 
-    (= (remainder b a) 0)
-)
+1000000000039 *** 0.
+1000000000061 *** 0.
+1000000000063 *** 0.
+1000000000091 *** 0.
+|#
+
+(define (expmod base exp mod)
+  (cond ((= exp 0) 1)
+        ((even? exp) 
+         (let ((half-exp (expmod base (/ exp 2) mod)))
+           (modulo (* half-exp half-exp) mod)))
+        (else (modulo (* base (expmod base (- exp 1) mod)) mod))))
+
+(define (fermat-test n)
+  (define (try-it a)
+    (= (expmod a n n) a))
+  (try-it (+ 1 (random (- n 1)))))
+
+(define (fast-prime? n times)
+  (cond ((= times 0) #t)
+        ((fermat-test n) (fast-prime? n (- times 1)))
+        (else #f)))
 
 (define (prime? n)
-    (= n (smallest-divisor n))
+    (fast-prime? n 10)
 )
-
-
-
-
-
 
 (define (timed-prime-test n)
     (start-prime-test n (runtime))
