@@ -1,44 +1,29 @@
 #|
-1000003 *** .24
-1000033 *** .24
-1000037 *** .25
-1000039 *** .27
-1000081 *** .23
-1000099 *** .24
-
-1000000007 *** .41
-1000000009 *** .41
-1000000021 *** .41
-1000000033 *** .4
-1000000087 *** .43
-1000000093 *** .42
-1000000097 *** .41
-
-1000000000039 *** .59
-1000000000061 *** .61
-1000000000063 *** .61
-1000000000091 *** .61
-
-1000000000000037 *** .78
-1000000000000091 *** .79
-
-So Fermat's test has Θ(log n) speed, so if the n = 1.000 and n = 1.000.000 the 
-difference will be like:
-
-log2(1000) = 9.97
-log2(1000000) = 19.93
-
-So the difference should be in twice more, but I didn't see this difference.
-Probably because the system's operations that are not related to the algorithm 
-are affected on the results.
+This code only works with small numbers. If the numbers are large, calculating the
+random number (a) raised to the power of the number checked (n) becomes very difficult
+due to the size of the numbers. The version from Extension 1.24 calculates the modulus
+from each intermediate result, keeping the numbers smaller and reducing system time.
+In 1.25, the modulus is calculated only from the final result, so this algorithm performs
+poorly with large numbers.
 |#
 
-(define (expmod base exp mod)
-  (cond ((= exp 0) 1)
-        ((even? exp) 
-         (let ((half-exp (expmod base (/ exp 2) mod)))
-           (modulo (* half-exp half-exp) mod)))
-        (else (modulo (* base (expmod base (- exp 1) mod)) mod))))
+(define (even? n)
+    (= (remainder n 2) 0)
+)
+
+(define (fast-expt base degree)
+    (expt-iter base degree 1)
+)
+
+(define (expt-iter base counter result)
+    (cond ((= counter 0) result)
+        ((even? counter) (expt-iter (* base base) (/ counter 2) result))
+        (else (expt-iter base (- counter 1) (* base result)))
+    )
+)
+
+(define (expmod base exp m) 
+    (remainder (fast-expt base exp) m))
 
 (define (fermat-test n)
   (define (try-it a)
@@ -51,7 +36,7 @@ are affected on the results.
         (else #f)))
 
 (define (prime? n)
-    (fast-prime? n 10000)
+    (fast-prime? n 1000)
 )
 
 (define (timed-prime-test n)
