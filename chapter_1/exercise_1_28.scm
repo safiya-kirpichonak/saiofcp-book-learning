@@ -1,1 +1,1 @@
-TODO
+#|Check JavaScript version|#
