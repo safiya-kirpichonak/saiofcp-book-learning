@@ -36,40 +36,27 @@ function doExponentiationModulo(number, exponent, modulo) {
   }
 }
 
-function findRemainderAndDivisions(remainder, divisions) {
-  if (!isEven(remainder)) {
-    return { remainder, divisions };
-  } else {
-    return findRemainderAndDivisions(remainder / 2, divisions + 1);
-  }
-}
-
-function doSecondRoundOfCheck(
-  number,
-  randomNumber,
-  exponentCoefficient,
-  divisions,
-  remainder
-) {
-  if (exponentCoefficient === divisions) return false;
-
-  const newExponent = 2 ** exponentCoefficient * remainder;
-  const secondCheck = doExponentiationModulo(randomNumber, newExponent, number);
-  if (secondCheck === number - 1) return true;
-  return doSecondRoundOfCheck(
-    number,
-    randomNumber,
-    exponentCoefficient + 1,
-    divisions,
-    remainder
-  );
-}
-
 function doMillerRabinTest(number, remainder, divisions) {
-  const randomNumber = Math.floor(Math.random() * (number - 2 - 2)) + 2;
+  const randomNumber = getRandomBetween(2, number - 2);
+
   const firstCheck = doExponentiationModulo(randomNumber, remainder, number);
   if (firstCheck === number - 1 || firstCheck === 1) return true;
-  return doSecondRoundOfCheck(number, randomNumber, 0, divisions, remainder);
+
+  for (
+    let exponentCoefficient = 0;
+    exponentCoefficient <= divisions;
+    exponentCoefficient++
+  ) {
+    const newExponent = 2 ** exponentCoefficient * remainder;
+    const secondCheck = doExponentiationModulo(
+      randomNumber,
+      newExponent,
+      number
+    );
+    if (secondCheck === number - 1) return true;
+  }
+
+  return false;
 }
 
 function fastPrime(number, times, remainder, divisions) {
@@ -87,7 +74,13 @@ function isPrime(number) {
   if (number === 2) return true;
   if (isEven(number)) return false;
 
-  const { remainder, divisions } = findRemainderAndDivisions(number - 1, 0);
+  let remainder = number - 1;
+  let divisions = 0;
+  while (isEven(remainder)) {
+    remainder /= 2;
+    divisions += 1;
+  }
+
   return fastPrime(number, TIMES, remainder, divisions);
 }
 
