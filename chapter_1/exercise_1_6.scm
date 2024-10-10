@@ -1,4 +1,4 @@
-;;; Lisa will receive infinity recursive, because LISP uses applicative-order evaluation (AOE). It means
+;;; Lisa will receive infinity recursive, because Lisp uses applicative-order evaluation (AOE). It means
 ;;; that in new-if both options (then and else cases) will be processed even if (good-enough? guess x) will be true.
 
 (define (new-if predicate then-cause else-cause)
