@@ -1,5 +1,13 @@
 # Lisp Syntax
 
+### comments from Lisp
+
+```
+;
+
+#||#
+```
+
 ### combination like (operator operands...)
 
 ```
@@ -22,8 +30,18 @@
 
 ### procedure definitions
 
+kebab-case: "do-function"
+
 ```
-(define (square x) (* x x))
+(define (square x) 
+    (* x x)
+)
+
+(define (check-carmichael-number n)
+  (newline)
+  (display n) 
+  ;(do-fermat-test n (- n 1))
+)
 ```
 
 ### conditionals
@@ -32,16 +50,47 @@ As much as you need.
 
 ```
 (cond 
-    ((> x 0) x) 
-    ((= x 0) 0)
-    ((< x 0) (- x)))
+    ((condition) x) 
+    ((condition) 0)
+    ((condition) (- x))
+)
+
+(cond ((condition) (- x)) (else x))
+
+(if (condition) (- x)  x)
 
 (cond 
-    ((< x 0) (- x))
-    (else x))
-
-(if (< x 0) 
-    (- x) 
-    x)
+    ((condition) 
+        (begin
+            ()
+            ()
+            ...
+        )
+    )
+    (else 
+        (begin
+            ()
+            ()
+            ...
+        )
+    )
+)
 ```
 
+### lambda
+
+```
+((lambda (x y z) (+ x y (square z))) 1 2 3)
+```
+
+### local variables 
+
+```
+(display 
+    (let ((x 3))
+        (+ x 
+           (* x 10)
+        )
+    )
+)
+```

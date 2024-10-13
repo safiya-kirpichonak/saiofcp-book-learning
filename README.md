@@ -18,10 +18,12 @@ sbcl --version
 
 ## Usage
 
-- create lisp file with .scm extension
+- install "Common Lisp" (qingpeng.common-lisp) extension for better view for Lisp. 
+
+- create lisp file with .scm or .lsp extension.
 
 - run lisp file:
 
 ```
-mit-scheme --load hello.scm
+mit-scheme --load hello.lsp
 ```
