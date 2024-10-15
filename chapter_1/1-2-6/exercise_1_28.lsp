@@ -10,7 +10,7 @@ even numbers are composite, except 2, which is prime.
   calculate divisions:
   6 / 2 = 3 => remainder = 3, divisions = 1.
 
-3. Repeat this algorithm x times, let's say 10 times. If any iteration returns false, the number is composite:
+3. Repeat this algorithm x times, let's say 100 times. If any iteration returns false, the number is composite:
   1. Pick a random number (randomNumber) from the range 2 to number - 2 (exclusive).
   2. Compute randomNumber ^ remainder mod number. If the result is 1 or number - 1, the number might be prime, and 
   we move to the next randomNumber.
