@@ -1,6 +1,7 @@
 # SAIOCP book [In progress]
 
-I am reading book "Structure and interpretation of computer programs" and here is my answers.
+I am reading book "Structure and interpretation of computer programs" and here is my answers. Some of the
+tasks I created with Lisp, other with Node.js.
 
 ## Installation (macOS)
 
