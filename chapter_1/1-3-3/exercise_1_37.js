@@ -6,7 +6,7 @@
 
 const contFracRecursive = (n, d, k) => {
   const recursive = (i) =>
-    i === k ? n(i) / d(i) : n(i) / (d(i) + iter(i + 1));
+    i === k ? n(i) / d(i) : n(i) / (d(i) + recursive(i + 1));
   return recursive(1);
 };
 
@@ -31,10 +31,7 @@ const findMimK = (f, firstGuess) => {
 };
 
 const transformation = (guess) =>
-  contFracIter(
-    () => 1,
-    () => 1,
-    guess
-  );
+  // contFracIter(() => 1, () => 1, guess); // 11
+  contFracRecursive(() => 1, () => 1, guess); // 11
 
 console.log(findMimK(transformation, 1));
