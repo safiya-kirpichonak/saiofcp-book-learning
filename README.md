@@ -1,7 +1,7 @@
 # SAIOCP book [In progress]
 
 I am reading book "Structure and interpretation of computer programs" and here is my answers. Some of the
-tasks I created with Lisp, other with Node.js.
+tasks I created with Lisp, other with JavaScript.
 
 ## Installation (macOS)
 
@@ -19,7 +19,7 @@ sbcl --version
 
 ## Usage
 
-- install "Common Lisp" (qingpeng.common-lisp) extension for better view for Lisp. 
+- install "Common Lisp" (qingpeng.common-lisp) extension for better view for Lisp.
 
 - create lisp file with .scm or .lsp extension.
 
