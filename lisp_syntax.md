@@ -103,3 +103,17 @@ As much as you need.
 ⟨тело⟩
 )
 ```
+
+### pair
+
+```
+(define x (cons 1 2)) 
+
+(define y (cons 3 4)) 
+
+(define z (cons x y)) 
+
+(car (car z)) ; 1
+
+(car (cdr z)) ; 3
+```
