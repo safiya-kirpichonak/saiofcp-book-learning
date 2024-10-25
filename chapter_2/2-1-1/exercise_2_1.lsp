@@ -1,9 +1,3 @@
-; (make-rat 1 2) → (cons 1 2)
-; (make-rat -1 2) → (make-rat -1 2)
-; (make-rat 1 -2) → (make-rat -1 2)
-; (make-rat -1 -2) → (make-rat 1 2)
-; (cons n d)
-
 (define (abs x)
   (if (>= x 0) x (- x)))
 
@@ -56,5 +50,5 @@
 (define one-half (make-rat -1 2)) 
 (define one-third (make-rat -1 3))
 
-(print-rat (add-rat one-half one-third)) ; - 5/6
+(print-rat (add-rat one-half one-third)) ; -5/6
 (print-rat (mul-rat one-half one-third)) ; 1/6
