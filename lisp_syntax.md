@@ -113,7 +113,11 @@ As much as you need.
 
 (define z (cons x y)) 
 
-(car (car z)) ; 1
-
-(car (cdr z)) ; 3
+(newline)
+(display (car (car z))) ; 1
+(newline)
+(display (cdr (cdr z))) ; 4
 ```
+
+
+
