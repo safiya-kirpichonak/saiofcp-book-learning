@@ -23,15 +23,14 @@
 
 (define interval (make-center-percent 100 10))
 
+(newline)
 (display "Center: ")
-(display (center interval))
-(newline)
+(display (center interval)) ; 100
 
+(newline)
 (display "Width: ")
-(display (width interval))
-(newline)
+(display (width interval)) ; 10
 
-(display "Percent uncertainty: ")
+(newline)
+(display "Percent uncertainty: ") ; 10
 (display (percent interval))
-(newline)
-
