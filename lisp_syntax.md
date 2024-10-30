@@ -1,6 +1,6 @@
 # Lisp Syntax
 
-### comments from Lisp
+### comments
 
 ```
 ;
@@ -119,5 +119,67 @@ As much as you need.
 (display (cdr (cdr z))) ; 4
 ```
 
+### error
 
+```
+(error "This is an error message")
+```
 
+### list
+
+how it works:
+
+```
+(list ⟨a1⟩ ⟨a2⟩ ... ⟨an⟩)
+=
+(cons ⟨a1⟩ (cons⟨a2⟩ (cons ... (cons ⟨an⟩ nil) ... ))) ; nil = nothing, empty list
+
+(define one-through-four (list 1 2 3 4)) 
+
+one-through-four ; (1 2 3 4)
+
+(car one-through-four) ; 1
+
+(cdr one-through-four) ; (2 3 4)
+
+(car (cdr one-through-four)) ; 2
+
+(cons 10 one-through-four) ; (10 1 2 3 4)
+```
+
+operations:
+
+- element by index:
+```
+(define squares (list 1 4 9 16 25)) 
+
+(newline)
+(display (list-ref squares 3))
+```
+
+- is list empty
+
+```
+(null? items) ;true or false
+```
+
+- find length on list
+
+```
+(length squares)
+```
+
+- append 
+
+```
+(append squares odds)
+(1 4 9 16 25 1 3 5 7)
+```
+
+- map 
+
+```
+(define map-result (map (lambda (x) (* x x)) (list 1 2 3 4)))
+
+(newline) (display map-result) ; (1 4 9 16)
+```
