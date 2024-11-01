@@ -106,6 +106,8 @@ As much as you need.
 
 ### pair
 
+- basic usage:
+
 ```
 (define x (cons 1 2)) 
 
@@ -117,6 +119,12 @@ As much as you need.
 (display (car (car z))) ; 1
 (newline)
 (display (cdr (cdr z))) ; 4
+```
+
+other operations:
+
+```
+(newline) (display (pair? (cons 1 2))) ; #t
 ```
 
 ### error
@@ -183,3 +191,19 @@ operations:
 
 (newline) (display map-result) ; (1 4 9 16)
 ```
+
+- !!! weird rules for pair + list working, if second parameter is list, it 
+will be the list in result:
+
+```
+(define x (cons 5 6)) 
+(define z (cons 5 (list 6 7)))
+(define a (cons (list 8 9) 10)) 
+(define y (cons (list 1 2) (list 3 4))) 
+
+(newline) (display x) ; (5 . 6)
+(newline) (display y) ; ((1 2) 3 4)
+(newline) (display z) ; (5 6 7)
+(newline) (display a) ; ((8 9) . 10)
+```
+
