@@ -83,6 +83,15 @@ As much as you need.
 ((lambda (x y z) (+ x y (square z))) 1 2 3)
 ```
 
+### integrated functions
+
+- odd?
+
+```
+(newline) (display (filter odd? (list 1 2 3 4 5))) ; (1 3 5)
+
+```
+
 ### local variables 
 
 ```
@@ -162,19 +171,23 @@ operations:
 (define squares (list 1 4 9 16 25)) 
 
 (newline)
-(display (list-ref squares 3))
+(display (list-ref squares 3)) ; 16
 ```
 
 - is list empty
 
 ```
-(null? items) ;true or false
+(define squares (list 1 4 9 16 25)) 
+
+(newline) (display (null? squares)) ; #f
 ```
 
 - find length on list
 
 ```
-(length squares)
+(define squares (list 1 4 9 16 25)) 
+
+(newline) (display (length squares)) ; 5
 ```
 
 - append 
@@ -192,8 +205,26 @@ operations:
 (newline) (display map-result) ; (1 4 9 16)
 ```
 
+- filter
+
+```
+(newline) (display (filter odd? (list 1 2 3 4 5))) ; (1 3 5)
+```
+
+- accumulate
+
+```
+(define (accumulate op initial sequence) 
+    (if (null? sequence)
+      initial
+      (op (car sequence)
+            (accumulate op initial (cdr sequence)))))
+
+(newline) (display (accumulate + 0 (list 1 2 3 4 5)))
+```
+
 - !!! weird rules for pair + list working, if second parameter is list, it 
-will be the list in result:
+will be the list in result and pair otherwise:
 
 ```
 (define x (cons 5 6)) 
