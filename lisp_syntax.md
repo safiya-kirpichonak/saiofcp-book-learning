@@ -44,6 +44,14 @@ kebab-case: "do-function"
 )
 ```
 
+function with infinite parameters:
+
+```
+(define (f x y . z) ⟨body⟩)
+
+(define (g . w) ⟨body⟩)
+```
+
 ### conditionals
 
 As much as you need.
@@ -86,10 +94,17 @@ As much as you need.
 ### integrated functions
 
 - odd?
+- even?
 
 ```
 (newline) (display (filter odd? (list 1 2 3 4 5))) ; (1 3 5)
 
+```
+
+- expt
+
+```
+(newline) (display (expt 2 3)) ; 8
 ```
 
 ### local variables 
@@ -227,14 +242,35 @@ operations:
 will be the list in result and pair otherwise:
 
 ```
-(define x (cons 5 6)) 
-(define z (cons 5 (list 6 7)))
-(define a (cons (list 8 9) 10)) 
-(define y (cons (list 1 2) (list 3 4))) 
-
-(newline) (display x) ; (5 . 6)
-(newline) (display y) ; ((1 2) 3 4)
-(newline) (display z) ; (5 6 7)
-(newline) (display a) ; ((8 9) . 10)
+(newline) (display (cons 5 6)) ; (5 . 6)
+(newline) (display (cons (list 1 2) (list 3 4))) ; ((1 2) 3 4)
+(newline) (display (cons 5 (list 6 7))) ; (5 6 7)
+(newline) (display (cons (list 8 9) 10)) ; ((8 9) . 10)
 ```
 
+### quotes, symbols, strings
+
+```
+(define a 1)
+
+(define b 2)
+
+(newline) (display (list a b)) ; (1 2)
+
+(newline) (display (list 'a 'b)) ; (a b)
+
+(newline) (display (list 'a b)) ; (a 2)
+
+(newline) (display (car '(a b c))) ; a
+
+(newline) (display (cdr '(a b c))) ; (b c)
+
+(newline) (display '()) ; ()
+```
+
+- eq?
+
+```
+(newline) (display (eq? 'a 'b)) ; #f
+(newline) (display (eq? 'a 'a)) ; #t
+```
