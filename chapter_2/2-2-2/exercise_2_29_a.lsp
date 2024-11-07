@@ -5,13 +5,14 @@
     (list length structure))
 
 (define (left-branch mobile)
-    (car mobile))
+  (list-ref mobile 0))
 
 (define (right-branch mobile)
-    (cdr mobile))
+  (list-ref mobile 1))
 
 (define (branch-length branch)
-    (car branch))
+  (list-ref branch 0))
 
 (define (branch-structure branch)
-    (cdr branch))
+  (list-ref branch 1))
+
