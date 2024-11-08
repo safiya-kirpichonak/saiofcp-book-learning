@@ -16,6 +16,7 @@
 (define (branch-structure branch)
   (list-ref branch 1))
 
+; my version:
 (define (total-weight mobile)
   (define ls (branch-structure (left-branch mobile)))
   (define rs (branch-structure (right-branch mobile)))
@@ -25,6 +26,13 @@
     ((and (pair? ls) (not (pair? rs))) (+ (total-weight ls) rs))
     ((and (not (pair? ls)) (not (pair? rs))) (+ ls rs))
     (else (error "Something went wrong."))))
+
+; better version:
+; (define (total-weight structure)
+;   (if (number? structure)
+;       structure
+;       (+ (total-weight (branch-structure (left-branch structure)))
+;          (total-weight (branch-structure (right-branch structure))))))
 
 #|
 result: 22
