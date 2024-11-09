@@ -1,0 +1,16 @@
+(define (square-tree-1 tree)
+  (cond ((null? tree) (list))
+        ((not (pair? tree)) (expt tree 2))
+        (else (cons (square-tree-1 (car tree))
+                    (square-tree-1 (cdr tree))))))
+
+(define (square-tree-2 tree)
+  (map (lambda (sub-tree)
+         (if (pair? sub-tree)
+             (square-tree-2 sub-tree)
+             (expt sub-tree 2)))
+       tree))
+
+(define tree (list 1 (list 2 (list 3 4) 5) (list 6 7)))
+(newline) (display (square-tree-1 tree)) ; (1 (4 (9 16) 25) (36 49))
+(newline) (display (square-tree-2 tree)) ; (1 (4 (9 16) 25) (36 49))
