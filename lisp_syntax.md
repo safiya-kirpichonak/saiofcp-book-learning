@@ -18,7 +18,7 @@
 (display (+ 1 2))
 ```
 
-### variables
+### global variables
 
 ```
 (define pi 3.14159)
@@ -108,6 +108,8 @@ As much as you need.
 ```
 
 ### local variables 
+
+Use let* to have ref between variables.
 
 ```
 (display 
