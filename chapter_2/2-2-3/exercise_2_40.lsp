@@ -8,14 +8,6 @@ sequence - list of values.
         (operation (car sequence) (accumulate operation initial (cdr sequence)))))
 
 #|
-operation - operation to run sequence with map before accumulate.
-sequence - list of values.
-returns result from accumulate where operation is append.
-|#
-(define (flatmap operation sequence)
-  (accumulate append (list) (map operation sequence)))
-
-#|
 low - begin of the interval.
 high - end of the interval.
 returns the new new interval from low to high.
@@ -27,11 +19,28 @@ returns the new new interval from low to high.
 #|
 n - the final number of future sequence.
 returns the list of unique pairs.
+
+Process (n = 6):
+first map:
+(enumerate-interval 1 n) => (1 2 3 4 5 6)
+(lambda (i)) = 1 => (enumerate-interval 1 (- 1 1)) = () => map works 0 time
+(lambda (i)) = 2 => (enumerate-interval 1 (- 2 1)) = (1) => map returns ((2 1))
+(lambda (i)) = 3 => (enumerate-interval 1 (- 3 1)) = (1 2) => map returns ((3 1) (3 2))
+(lambda (i)) = 4 => (enumerate-interval 1 (- 4 1)) = (1 2 3) => map returns ((4 1) (4 2) (4 3))
+(lambda (i)) = 5 => (enumerate-interval 1 (- 5 1)) = (1 2 3 4) => map returns ((5 1) (5 2) (5 3) (5 4))
+(lambda (i)) = 6 => (enumerate-interval 1 (- 6 1)) = (1 2 3 4 5) => map returns ((6 1) (6 2) (6 3) (6 4) (6 5))
 |#
+
 (define (unique-pairs n)
-    (flatmap
-        (lambda (i) (map (lambda (j) (list i j)) (enumerate-interval 1 (- i 1))))
-        (enumerate-interval 1 n)))
+    (accumulate 
+        append 
+        (list)
+        (map 
+            (lambda (i) 
+                (map 
+                    (lambda (j) (list i j)) 
+                    (enumerate-interval 1 (- i 1)))) 
+            (enumerate-interval 1 n))))
 
 #|
 Implimintation of new function:
