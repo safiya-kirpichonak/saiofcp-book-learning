@@ -184,6 +184,7 @@ one-through-four ; (1 2 3 4)
 operations:
 
 - element by index:
+
 ```
 (define squares (list 1 4 9 16 25)) 
 
