@@ -74,8 +74,8 @@
 ; (function frame)
 
 ; "X" picture
-; (define segment1 (make-segment (make-vect 5 5) (make-vect 95 95)))
-; (define segment2 (make-segment (make-vect 95 5) (make-vect 5 95)))
+(define segment1 (make-segment (make-vect 5 5) (make-vect 95 95)))
+(define segment2 (make-segment (make-vect 95 5) (make-vect 5 95)))
 ; (define function (segments->painter (list segment1 segment2)))
 ; (define frame (make-frame (make-vect 0 0) (make-vect 1 0) (make-vect 0 1)))
 ; (function frame)
