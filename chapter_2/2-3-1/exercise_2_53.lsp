@@ -8,6 +8,11 @@
 
 (newline) (display (pair? (car '(a short list)))) ; #f
 
+(define (memq item x)
+  (cond ((null? x) false)
+        ((eq? item (car x)) x)
+        (else (memq item (cdr x)))))
+
 (newline) (display (memq 'red '((red shoes) (blue socks)))) ; #f
 
-(newline) (display (memq 'red '(red shoes blue socks))) ; (red shoes blue socks)
+(newline) (display (memq 'red '(shoes red blue socks))) ; (red blue socks)
