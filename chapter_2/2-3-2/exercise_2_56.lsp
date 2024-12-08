@@ -1,3 +1,5 @@
+; BAD
+
 (define (variable? x) (symbol? x))
 
 (define (same-variable? v1 v2)
@@ -84,4 +86,4 @@
                 (deriv (base exp) var)))
         (else (error "strange type of expression -- DERIV" exp))))
 
-(newline) (display (deriv '(* x y (+ x 3)) 'x))
+(newline) (display (deriv '(* x y (+ x 3)) 'x)) ; (+ (* x (* y)) (* (* y (+ x 3))))
