@@ -11,4 +11,4 @@
               (else (iter result (cdr items)))))
     (iter '() (append set1 set2)))
 
-(newline) (display (union-set '(1 2 3 5 6) '(1 2 3 4))) ; (1 2 3 4)
+(newline) (display (union-set '(1 2 3 5 6) '(1 2 3 4))) ; (1 2 3 5 6 4)
