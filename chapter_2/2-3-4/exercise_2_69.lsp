@@ -143,7 +143,7 @@
 ; +-----------------------------+
 
 (define sample-tree (generate-huffman-tree '((a 4) (b 2) (d 1) (c 1))))
-(newline) (display sample-tree) ; !!!
+(newline) (display sample-tree) ; ((leaf a 4) ((leaf b 2) ((leaf d 1) (leaf c 1) (d c) 2) (b d c) 4) (a b d c) 8)
 (define sample-message '(a d a b b c a))
 (newline) (display (encode sample-message sample-tree)) ; (0 1 1 0 0 1 0 1 0 1 1 1 0)
 (newline) (display (decode (encode sample-message sample-tree) sample-tree)) ; (a d a b b c a)
