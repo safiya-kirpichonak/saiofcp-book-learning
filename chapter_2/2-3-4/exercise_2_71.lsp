@@ -8,7 +8,6 @@ d - 8
 e - 16
 Answer: for the a - 4 bits, for e - 1 bit.
 
-
 2. n = 10
 if n = 10 => 2 ** (10 - 1) => 2 ** 9 = 512
 alphabet:
