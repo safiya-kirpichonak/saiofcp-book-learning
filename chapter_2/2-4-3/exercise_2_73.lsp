@@ -9,7 +9,9 @@ It cannot be included because it is meaningless. We have a table designed to wor
 specific set of data types (sum or product), and the operations "variable?" and "number?" do not 
 belong to this set and are not operations on these data types.
 
-d. ...
+d. I think, we just need to change order of parameters in the put functions, for example: 
+(put 'make '(+) make) => (put '(+) 'make make), because code the same, except of one detail:
+(get 'deriv (operator exp)) => (get (operator exp) 'deriv).
 |#
 
 (define (install-sum-operations)
@@ -72,10 +74,7 @@ d. ...
 (define (deriv exp var)
   (cond ((number? exp) 0)
         ((variable? exp) (if (same-variable? exp var) 1 0))
-        (else (
-                (get 'deriv (operator exp)) 
-                (operands exp) 
-                var))))
+        (else ((get 'deriv (operator exp)) (operands exp) var))))
 
 (define (operator exp) (car exp))
 
