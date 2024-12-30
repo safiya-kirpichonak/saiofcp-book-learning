@@ -20,15 +20,15 @@ d. ...
               ((and (number? a1) (number? a2)) (+ a1 a2))
               (else (list '+ a1 a2))))
 
-    (define (first-operand sum) (cadr sum))
+    (define (addend sum) (cadr sum))
 
-    (define (second-operand sum) (caddr sum))
+    (define (augend sum) (caddr sum))
 
     ;; external interface
     (define (tag x) (attach-tag '+ x))
     (put 'make '(+) make)
-    (put 'first-operand '(+) first-operand)
-    (put 'second-operand '(+) second-operand)
+    (put 'first-operand '(+) (lambda (exponentiation) (addend exponentiation)))
+    (put 'second-operand '(+) (lambda (exponentiation) (augend exponentiation)))
     done)
 
 (define (install-product-operations)
@@ -40,15 +40,33 @@ d. ...
               ((and (number? m1) (number? m2)) (* m1 m2))
               (else (list '* m1 m2))))
         
-    (define (first-operand product) (cadr product))
+    (define (multiplier p) (cadr p))
 
-    (define (second-product product) (caddr product))
+    (define (multiplicand p) (caddr p))
 
     ;; external interface
     (define (tag x) (attach-tag '* x))
     (put 'make '(*) make)
-    (put 'first-operand '(*) first-operand)
-    (put 'second-operand '(*) second-operand)
+    (put 'first-operand '(*) (lambda (exponentiation) (multiplier exponentiation)))
+    (put 'second-operand '(*) (lambda (exponentiation) (multiplicand exponentiation)))
+    done)
+
+(define (install-exponential-operations)
+    ;; internal procedures
+    (define (make-exponentiation base exponent)
+        (cond ((=number? exponent 0) 1)
+              ((=number? exponent 1) base)
+              (else (list '** base exponent))))
+
+    (define (base exponentiation) (cadr exponentiation))
+
+    (define (exponent exponentiation) (caddr exponentiation))
+
+    ;; external interface
+    (define (tag x) (attach-tag '** x))
+    (put 'make '(**) make)
+    (put 'first-operand '(**) (lambda (exponentiation) (base exponentiation)))
+    (put 'second-operand '(**) (lambda (exponentiation) (exponent exponentiation)))
     done)
 
 (define (deriv exp var)
@@ -62,4 +80,3 @@ d. ...
 (define (operator exp) (car exp))
 
 (define (operands exp) (cdr exp))
-
