@@ -1,4 +1,6 @@
 #|
+You can't run this code.
+
 a. Let's imagine we have 2 departments with the following structures:
 - lazy-department: '('(index employee-name)'(employee-address employee-salary))
 - meticulous-department: '(employee-name 
