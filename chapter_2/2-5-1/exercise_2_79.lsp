@@ -16,7 +16,7 @@
     ; ...
     (define (eq-complex? x y)
         (and (= (real-part x) (real-part y))
-                             (= (imag-part x) (imag-part y))))
+             (= (imag-part x) (imag-part y))))
 
     (put 'eq? '(complex complex) eq-complex?)
     'done)
