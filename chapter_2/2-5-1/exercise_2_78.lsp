@@ -1,0 +1,17 @@
+(define (attach-tag . args)
+  (cond ((= (length args) 2) (cons (car args) (cadr args)))
+        ((and (= (length args) 1) (number? (car args))) (car args))
+        ((and (= (length args) 1) (symbol? (car args))) (car args))
+        (else (error "Incorrect arguments -- ATTACH-TAG"))))
+
+(define (type-tag datum)
+    (cond ((pair? datum) (car datum))
+          ((number? datum) 'number)
+          ((symbol? datum) 'symbol)
+          (else (error "Incorrect data type -- TYPE-TAG"))))
+
+(define (contents datum)
+  (cond ((pair? datum) (car datum))
+        ((number? datum) datum)
+        ((symbol? datum) datum)
+        (else (error "Incorrect data type -- CONTENTS"))))
