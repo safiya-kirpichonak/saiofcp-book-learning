@@ -7,16 +7,18 @@
 (define (install-rational-package)
     (define (tag x) (attach-tag 'rational x))
     ; ...
-    (put 'eq? '(rational rational) 
-        (lambda (x y) (= (* (numer x) (denom y)) (* (denom x) (numer y)))))
+    (put '=zero? '(rational) 
+        (lambda (x) 
+            (cond ((= (numer x) 0) #t)
+                  ((= (denom x) 0) (error "Denom can't be 0! -- =ZERO?"))
+                  (else #f))))
     'done)
 
 (define (install-complex-package)
     (define (tag z) (attach-tag 'complex z))
     ; ...
-    (define (eq-complex? x y)
-        (and (= (real-part x) (real-part y))
-                             (= (imag-part x) (imag-part y))))
-
-    (put 'eq? '(complex complex) eq-complex?)
+    (put '=zero? '(complex) 
+        (lambda (x) (and 
+                        (= (real-part x) 0) 
+                        (= (imag-part x) 0))))
     'done)
