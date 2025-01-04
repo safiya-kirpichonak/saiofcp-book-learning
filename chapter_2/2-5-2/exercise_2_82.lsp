@@ -1,4 +1,15 @@
-; you can't run this code
+#|
+you can't run this code
+
+1. If there is no operation for the resulting type, an error will occur.
+
+2. Some operations can and should work with multiple types, for example, 
+multiplying a vector by a matrix. However, our strategy only provides 
+for operations with a single data type.
+
+3. In our current strategy, the first successfully cast type for all 
+arguments will be used, but the operation may not support it.  
+|#
 
 (define (iter1 args1 args1-iter)
     (if (null? args1) #f
