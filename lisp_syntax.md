@@ -277,3 +277,20 @@ will be the list in result and pair otherwise:
 (newline) (display (eq? 'a 'b)) ; #f
 (newline) (display (eq? 'a 'a)) ; #t
 ```
+
+### begin
+
+Just shows the beginning of the block of code. It returns
+the result of last code block.
+
+```
+(begin ⟨expression-1⟩ ⟨expression-2⟩ ... ⟨expression-n⟩)
+```
+
+### set
+
+With this expression I can change the value of variable.
+
+```
+(set! (name) (new value))
+```
