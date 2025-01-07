@@ -1,7 +1,13 @@
-(define (=zero? term-coefficient) 
-    (= term-coefficient 0))
+(define (=zero? term-coefficient) (= term-coefficient 0))
 
-(define (adjoin-term term term-list) 
-  (if (=zero? (coefficient term)) term-list (cons term term-list)))
+(define (make-term order coeff) (list order coeff)) 
 
-(define (coefficient term) (cadr term))
+(define (order term) (car term))
+
+(define (coeff term) (cadr term))
+
+(define term-1 (make-term 0 0))
+(define term-2 (make-term 0 1))
+
+(newline) (display (=zero? (coeff term-1))) ; #t
+(newline) (display (=zero? (coeff term-2))) ; #f
