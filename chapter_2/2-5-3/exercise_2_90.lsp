@@ -1,9 +1,3 @@
-; 1. Create dense functions
-; 2. Create sparse functions
-; 3. Create general selectors
-; 4. Create only sum function
-
-
 ; +-------------------------------------+
 ; type tag
 ; +-------------------------------------+
@@ -46,15 +40,8 @@
         (error "Incorrect term type -- IS-ZERO-DENSE")))
 
 ; (('dense (2 2)) ('dense (1 3)) ('dense (0 4)))
-(define (adjoin-term-dense term order term-list) ...)
-
-(define (the-empty-termlist-dense) '())
-
-(define (first-term term-list-dense) (car term-list))
-
-(define (rest-terms term-list-dense) (cdr term-list))
-
-(define (is-empty-termlist-dense term-list) (null? term-list))
+(define (adjoin-term-dense term term-list) 
+    (if (=zero? (coeff term)) term-list (cons term term-list)))
 
 ; +-------------------------------------+
 ; functions for the sparse polynomial
@@ -86,19 +73,11 @@
             (cons (car lst) (insert-at (cdr lst) (- index 1) value))))
 
     (let ((term-length (length term-list))) 
-       (cond  ((= order term-length) (cons (make-term-sparse coeff) term-list))
+       (cond  ((= order term-length) (cons (make-term-sparse order coeff) term-list))
               ((> order term-length) (append (make-term-sparse (- order term-length) coeff) term-list))
               ((and (< order term-length) (> order -1)) 
                     (insert-at term-list (- term-length order) (make-term-sparse 0 coeff)))
               (error "Unknow position -- ADJOIN-TERM"))))
-
-(define (the-empty-termlist-sparse) '())
-
-(define (first-term-sparse-sparse term-list) (car term-list)) 
-
-(define (rest-terms-sparse-sparse term-list) (cdr term-list)) 
-
-(define (is-empty-termlist-sparse term-list) (null? term-list))
 
 ; +-------------------------------------+
 ; general selectors
@@ -120,14 +99,20 @@
           (else (error "Unknown type -- IS-ZERO"))))
 
 (define (adjoin-term coeff order term-list) 
-    (cond ((dense? term) (adjoin-term-dense coeff order term-list))
+    (cond ((dense? term) (adjoin-term-dense (make-term-dense order coeff) term-list))
           ((sparse? term) (adjoin-term-sparse coeff order term-list))
           (else (error "Unknown type -- ADJOIN-TERM"))))
 
-(define (the-empty-termlist-sparse) '())
+(define (the-empty-termlist) '())
 
-(define (first-term-sparse-sparse term-list) (car term-list)) 
+(define (first-term-sparse term-list) (car term-list)) 
 
-(define (rest-terms-sparse-sparse term-list) (cdr term-list)) 
+(define (rest-terms-sparse term-list) (cdr term-list)) 
 
-(define (is-empty-termlist-sparse term-list) (null? term-list))
+(define (is-empty-termlist term-list) (null? term-list))
+
+; +-------------------------------------+
+; general operations
+; +-------------------------------------+
+
+
