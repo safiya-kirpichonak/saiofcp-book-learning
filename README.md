@@ -29,6 +29,6 @@ sbcl --version
 mit-scheme --load hello.lsp
 ```
 
-## 2-2-4
+## Instructions for folder 2-2-4
 
 For this part of the book you need [Racket and tool DrRacket](https://docs.racket-lang.org/getting-started/). Download it and set up. next you need to install specific library "sicp". I will use "einstein" painter for all tasks, because "wave" and "rogers" don't work.
