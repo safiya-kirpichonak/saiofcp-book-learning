@@ -86,6 +86,7 @@
 ; ((y (y 2 1) (y 0 -1)) (x (x 5 1) (x 0 -1)))
 ; (newline) (display (group-by-first-element '((x 5 1) (y 2 1) (x 0 -1) (y 0 -1))))
 
+; how loop construction works ???
 (define (combine-groups L1 L2 operation)
   (let ((L1-mapped (map (lambda (group) (cons (car group) (cdr group))) L1))
         (L2-mapped (map (lambda (group) (cons (car group) (cdr group))) L2)))
