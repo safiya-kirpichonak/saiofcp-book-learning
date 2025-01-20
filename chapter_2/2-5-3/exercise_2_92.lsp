@@ -86,7 +86,6 @@
 ; ((y (y 2 1) (y 0 -1)) (x (x 5 1) (x 0 -1)))
 ; (newline) (display (group-by-first-element '((x 5 1) (y 2 1) (x 0 -1) (y 0 -1))))
 
-; how loop construction works ???
 (define (combine-groups L1 L2 operation)
   (let ((L1-mapped (map (lambda (group) (cons (car group) (cdr group))) L1))
         (L2-mapped (map (lambda (group) (cons (car group) (cdr group))) L2)))
@@ -107,12 +106,31 @@
                         remaining-L2
                         (cons group1 result)))))))))
 
-; ((x (x 5 2) (x 0 -2)) (y (y 2 2) (y 0 -2)) (z (z 3 0) (z 1 1)))
 ; (define L1 '((y (y 2 1) (y 0 -1)) (x (x 5 1) (x 0 -1))))
 ; (define L2 '((y (y 2 1) (y 0 -1)) (x (x 5 1) (x 0 -1)) (z (z 3 0) (z 1 1))))
+; ((x (x 5 2) (x 0 -2)) (y (y 2 2) (y 0 -2)) (z (z 3 0) (z 1 1)))
 ; (newline) (display (combine-groups L1 L2 add-terms-one-variable))
 
+(define (flatten-groups lst)
+  (apply append (map (lambda (group) (cdr group)) lst)))
 
+; (define input '((x (x 5 2) (x 0 -2)) (y (y 2 2) (y 0 -2)) (z (z 3 0) (z 1 1))))
+; ((x 5 2) (x 0 -2) (y 2 2) (y 0 -2) (z 3 0) (z 1 1))
+; (newline) (display (flatten-groups input))
+
+(define (add-terms L1 L2) 
+    (flatten-groups 
+      (combine-groups
+        (group-by-first-element L1)
+        (group-by-first-element L2)
+        add-terms-one-variable)))
+
+(define (mul-terms L1 L2) 
+    (flatten-groups 
+      (combine-groups
+        (group-by-first-element L1)
+        (group-by-first-element L2)
+        mul-terms-one-variable)))
 
 ; +--------------------------+
 ; tests
@@ -122,15 +140,35 @@
 (define term-2 (make-term 'y 2 1))
 (define term-3 (make-term 'x 0 -1))
 (define term-4 (make-term 'y 0 -1))
-(define term-list 
+(define term-list-1 
     (adjoin-term term-1
         (adjoin-term term-2 
             (adjoin-term term-3 
                 (adjoin-term term-4 
                     (the-empty-term-list))))))
 
+(define term-5 (make-term 'x 4 1))
+(define term-6 (make-term 'y 3 1))
+(define term-7 (make-term 'x 0 -1))
+(define term-8 (make-term 'y 1 -1))
+(define term-9 (make-term 'z 1 1))
+(define term-list-2
+    (adjoin-term term-5
+        (adjoin-term term-6
+            (adjoin-term term-7
+                (adjoin-term term-8
+                    (adjoin-term term-9
+                        (the-empty-term-list)))))))
+
 ; ((x 5 1) (y 2 1) (x 0 -1) (y 0 -1))
-; (newline) (display term-list) 
+(newline) (display term-list-1)
+; ((x 4 1) (y 3 1) (x 2 -1) (y 1 -1) (z 1 1))
+(newline) (display term-list-2) 
+
+; ((x 5 1) (x 4 1) (x 2 -1) (x 0 -1) (y 3 1) (y 2 1) (y 1 -1) (y 0 -1) (z 1 1))
+(newline) (display (add-terms term-list-1 term-list-2))
+; ((x 9 1) (x 7 -1) (x 4 -1) (x 2 1) (y 5 1) (y 3 -2) (y 1 1) (z 1 1))
+(newline) (display (mul-terms term-list-1 term-list-2))
 
 ; ((x 3 10) (x 0 8))
 ; (newline) (display (add-terms-one-variable '((x 3 5) (x 0 4)) '((x 3 5) (x 0 4))))
