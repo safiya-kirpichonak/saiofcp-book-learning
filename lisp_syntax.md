@@ -294,3 +294,13 @@ With this expression I can change the value of variable.
 ```
 (set! (name) (new value))
 ```
+
+You can change the value of pair:
+
+```
+(define test-pair (cons 1 2))
+(newline) (display test-pair) ; (1 . 2)
+(set-car! test-pair (cons 1 2))
+(set-cdr! test-pair (cons 3 4))
+(newline) (display test-pair) ; ((1 . 2) 3 . 4)
+```
