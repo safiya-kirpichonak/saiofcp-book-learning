@@ -1,21 +1,16 @@
 ; I am not sure about this task
 
 #|
-+------+
++-------------------------------------------------------+
 global env
-+------+
-|       | link to env
-code    |
-        +-------+
-        E1: env where n = 2
-        +-------+
-        |       | link to env
-        code    |
-              +-------+
-              E2: env where n = 1
-              +-------+
-              |
-              code -> calculate result
++-------------------------------------------------------+
+|       | link to env           | link to env
+code    |                       |
+        +-------+               +-------+
+        E1: env where n = 2 ->  E2: env where n = 1
+        +-------+               +-------+
+        |                       |
+        code                    code -> calculate result
 |#
 
 (define (factorial n) 
