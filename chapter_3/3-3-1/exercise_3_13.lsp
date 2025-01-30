@@ -23,4 +23,4 @@ a -> b -> c
 
 (define z (make-cycle x)) 
 (newline) (display z) ; infinity loop like a -> b -> c -> a -> b -> c -> ....
-(newline) (display (last-pair z)) ; no result
+(newline) (display (last-pair z)) ; no result (because z is infinity loop of symbols)
