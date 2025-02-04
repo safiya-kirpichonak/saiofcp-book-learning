@@ -1,45 +1,52 @@
-(define (make-queue)
-  (define queue (cons '() '()))
+(define (front-ptr queue) (car queue))
 
-  (define (front-ptr) (car queue))
+(define (rear-ptr queue) (cdr queue))
 
-  (define (rear-ptr) (cdr queue))
+(define (set-front-ptr! queue item) (set-car! queue item))
 
-  (define (empty-queue?) (null? (front-ptr)))
+(define (set-rear-ptr! queue item) (set-cdr! queue item))
 
-  (define (set-front-ptr! item) (set-car! queue item))
+(define (empty-queue? queue) (null? (front-ptr queue)))
 
-  (define (set-rear-ptr! item) (set-cdr! queue item))
+(define (make-queue) (cons '() '()))
 
-  (define (insert-queue! item)
+(define (front-queue queue) 
+		(if (empty-queue? queue)
+				(error "Empty queue was provided -- FRONT-QUEUE" queue) 
+				(car (front-ptr queue))))
+
+(define (insert-queue! queue item) 
     (let ((new-pair (cons item '())))
-      (if (empty-queue?)
-          (begin
-            (set-front-ptr! new-pair)
-            (set-rear-ptr! new-pair))
-          (begin
-            (set-cdr! (rear-ptr) new-pair)
-            (set-rear-ptr! new-pair)))
-      queue))
+         (cond ((empty-queue? queue) 
+                    (set-front-ptr! queue new-pair) 
+                    (set-rear-ptr! queue new-pair) queue)
+                (else
+                    (set-cdr! (rear-ptr queue) new-pair) 
+                    (set-rear-ptr! queue new-pair) 
+                    queue))))
 
-  (define (delete-queue!) 
-    (if (empty-queue?)
-        (error "Empty queue was provided -- DELETE-QUEUE")
-        (let ((new-front (cdr (front-ptr))))
-          (set-front-ptr! new-front)
-          (if (null? new-front)
-              (set-rear-ptr! '()))
-          queue)))
+(define (delete-queue! queue) 
+		(cond ((empty-queue? queue) (error "Empty queue was provided -- DELETE-QUEUE" queue)) 
+           (else (set-front-ptr! queue (cdr (front-ptr queue))) queue)))
 
-  (define (dispatch operation)
-    (cond ((eq? operation 'insert) insert-queue!)
-          ((eq? operation 'delete) delete-queue!)
-          (else (error "Incorrect operation -- MAKE-QUEUE"))))
+(define q1 (make-queue))
 
-  dispatch)
+#|
+The result like that, because the last item, after list, is 
+link to the last item of the queue.
+|#
 
-(define my-queue (make-queue))
-(newline) (display ((my-queue 'insert) 7)) ; ((7) 7)
-(newline) (display ((my-queue 'insert) 8)) ; ((7 8) 8)
-(newline) (display ((my-queue 'insert) 9)) ; ((7 8 9) 9)
-(newline) (display ((my-queue 'delete)))   ; ((8 9) 9)
+(define (print-queue queue)
+  (newline) (display (car queue)))
+
+(insert-queue! q1 'a)
+(print-queue q1) ; (a)
+
+(insert-queue! q1 'b)
+(print-queue q1) ; (a b)
+
+(delete-queue! q1)
+(print-queue q1) ; (b)
+
+(delete-queue! q1)
+(print-queue q1) ; ()
