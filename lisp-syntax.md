@@ -305,7 +305,7 @@ You can change the value of pair:
 (newline) (display test-pair) ; ((1 . 2) 3 . 4)
 ```
 
-### make-hash-table
+### hash tables
 
 ```
 (define hash (make-hash-table))
@@ -317,4 +317,24 @@ You can change the value of pair:
 (newline) (display (hash-table-contains? hash 'key3)) ; #f
 (newline) (display (hash-table-ref hash 'key1)) ; value1
 (newline) (display (hash-table-ref hash 'key3)) ; error
+```
+
+If you need to safe hash keys by link use make-eq-hash-table. Example:
+
+```
+(define hash1 (make-hash-table))
+(define hash2 (make-eq-hash-table))
+
+(define key1 '(1 2 3))
+
+(hash-table-set! hash1 key1 'value1)
+(hash-table-set! hash2 key1 'value1)
+
+(set-cdr! key1 4)
+(newline) (display key1) ; (1 . 4)
+(newline) (display (cons 1 4)) ; (1 . 4)
+
+(newline) (display (hash-table-contains? hash1 (cons 1 4))) ; #t
+(newline) (display (hash-table-contains? hash2 (cons 1 4))) ; #f
+(newline) (display (hash-table-contains? hash2 key1)) ; #t
 ```
