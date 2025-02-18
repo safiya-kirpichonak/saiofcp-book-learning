@@ -1,6 +1,6 @@
-# SAIOCP book
+# SAIOCP book [In progress]
 
-I am reading the book "Structure and Interpretation of Computer Programs," and here are my answers. Most of them are completed in Lisp, while others are in JavaScript.
+I am reading the book "Structure and Interpretation of Computer Programs" and here are my answers. Most of them are completed in Lisp, while others are in JavaScript.
 
 ## Installation (macOS)
 
