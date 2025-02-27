@@ -5,3 +5,4 @@
 24.02.2025: read 4.1.1
 25.02.2025: read 4.1.2
 26.02.2025: read 4.1.3
+27.02.2025: read 4.1.4, checked "meta-circular-interpreter"
