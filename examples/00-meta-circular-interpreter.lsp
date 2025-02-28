@@ -1,5 +1,71 @@
 #|
 +-------------------------------+
+Environment operations
++-------------------------------+
+|#
+
+(define (enclosing-environment env) (cdr env))
+
+(define (first-frame env) (car env))
+
+(define the-empty-environment '())
+
+(define (make-frame variables values)
+  (cons variables values))
+
+(define (frame-variables frame) (car frame))
+
+(define (frame-values frame) (cdr frame))
+
+(define (add-binding-to-frame! var val frame)
+  (set-car! frame (cons var (car frame)))
+  (set-cdr! frame (cons val (cdr frame))))
+
+(define (extend-environment vars vals base-env)
+  (if (= (length vars) (length vals))
+      (cons (make-frame vars vals) base-env)
+      (if (< (length vars) (length vals))
+          (error "Too many arguments -- EXTEND-ENVIRONMENT" vars vals)
+          (error "Too few arguments -- EXTEND-ENVIRONMENT" vars vals))))
+
+(define (lookup-variable-value var env)
+  (define (env-loop env)
+    (define (scan vars vals)
+      (cond ((null? vars) (env-loop (enclosing-environment env)))
+            ((eq? var (car vars)) (car vals))
+            (else (scan (cdr vars) (cdr vals)))))
+
+    (if (eq? env the-empty-environment)
+        (error "Unbound variable -- LOOKUP-VARIABLE-VALUE" var)
+        (let ((frame (first-frame env)))
+          (scan (frame-variables frame) (frame-values frame)))))
+
+  (env-loop env))
+
+(define (set-variable-value! var val env)
+  (define (env-loop env)
+    (define (scan vars vals)
+      (cond ((null? vars) (env-loop (enclosing-environment env)))
+            ((eq? var (car vars)) (set-car! vals val))
+            (else (scan (cdr vars) (cdr vals)))))
+
+    (if (eq? env the-empty-environment)
+        (error "Unknown variable -- SET-VARIABLE-VALUE!" var)
+        (let ((frame (first-frame env)))
+          (scan (frame-variables frame) (frame-values frame)))))
+
+  (env-loop env))
+
+(define (define-variable! var val env)
+  (let ((frame (first-frame env)))
+    (define (scan vars vals)
+      (cond ((null? vars) (add-binding-to-frame! var val frame))
+            ((eq? var (car vars)) (set-car! vals val))
+            (else (scan (cdr vars) (cdr vals)))))
+    (scan (frame-variables frame) (frame-values frame))))
+
+#|
++-------------------------------+
 Expressions definitions
 +-------------------------------+
 |#
@@ -120,6 +186,30 @@ Expressions definitions
                      (sequence->exp (cond-actions first))
                      (expand-clauses rest))))))
 
+(define (true? x) (not (eq? x false)))
+
+(define (false? x) (eq? x false))
+
+(define (tagged-list? exp tag)
+  (if (pair? exp)
+      (eq? (car exp) tag)
+      false))
+
+(define (make-procedure parameters body env)
+  (list 'procedure parameters body env))
+
+(define (compound-procedure? p)
+  (tagged-list? p 'procedure))
+
+(define (procedure-parameters p)
+  (cadr p))
+
+(define (procedure-body p)
+  (caddr p))
+
+(define (procedure-environment p)
+  (cadddr p))
+
 #|
 +-------------------------------+
 Eval apply definition
@@ -184,8 +274,40 @@ Eval apply definition
                     env)
   'ok)
 
-(newline) (display (eval 42 '())) ; 42
-; (define env '((x 10) (y 20)))
-; (newline) (display (eval 'x env)) ; 10 ;; !!! ;Unbound variable: lookup-variable-value
+#|
++-------------------------------+
+Examples
++-------------------------------+
+|#
 
+(define global-env (extend-environment '() '() the-empty-environment))
+(newline) (display (eval 42 global-env))  ;; -> 42
+(newline) (display (eval "Hello, world!" global-env))  ;; -> "Hello, world!"
 
+(eval '(define x 10) global-env)
+(newline) (display (eval 'x global-env)) ;; -> 10
+(eval '(set! x 20) global-env)
+(newline) (display (eval 'x global-env))  ;; -> 20
+
+;Unbound variable -- LOOKUP-VARIABLE-VALUE +
+; (eval '(begin 
+;          (define y 2) 
+;          (set! y (+ y 3)) 
+;          y) global-env)
+; ;; -> 5
+
+; Unbound variable -- LOOKUP-VARIABLE-VALUE *
+; (eval '(define (square x) (* x x)) global-env)
+; (newline) (display (eval '(square 5) global-env))  ;; -> 25
+
+; Unbound variable -- LOOKUP-VARIABLE-VALUE <
+; (eval '(define (abs x) (if (< x 0) (- x) x)) global-env)
+; (newline) (display (eval '(abs -7) global-env))  ;; -> 7
+; (newline) (display (eval '(abs 3) global-env))   ;; -> 3
+
+; Unbound variable -- LOOKUP-VARIABLE-VALUE factorial
+; (eval '(define (factorial n) 
+;          (if (= n 0) 
+;              1 
+;              (* n (factorial (- n 1))))) global-env)
+; (newline) (display (eval '(factorial 5) global-env))  ;; -> 120
