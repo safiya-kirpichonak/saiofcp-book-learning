@@ -22,6 +22,7 @@ Environment operations
   (set-cdr! frame (cons val (cdr frame))))
 
 (define (extend-environment vars vals base-env)
+  (newline) (display "I was in extend-environment")
   (if (= (length vars) (length vals))
       (cons (make-frame vars vals) base-env)
       (if (< (length vars) (length vals))
@@ -352,18 +353,99 @@ Apply definition
 
 #|
 +-------------------------------+
+Environment setup: 4.1.4
++-------------------------------+
+|#
+
+; error is here:
+(define primitive-procedures
+  (list (list 'car car)))
+
+(define primitive-procedure-names (map car primitive-procedures))
+
+(define primitive-procedure-objects
+  (map (lambda (proc) (list 'primitive (cadr proc)))
+       primitive-procedures))
+
+
+
+
+(define (setup-environment)
+  (newline) (display "I was in setup-environment!")
+  (let ((initial-env
+         (extend-environment (primitive-procedure-names)
+                             (primitive-procedure-objects)
+                             the-empty-environment)))
+    (define-variable! 'true true initial-env)
+    (define-variable! 'false false initial-env)
+    initial-env))
+
+(define the-global-environment (setup-environment))
+
+(define (primitive-procedure? proc)
+  (tagged-list? proc 'primitive))
+
+(define (primitive-implementation proc)
+  (cadr proc))
+
+
+(define (apply-primitive-procedure proc args)
+  (apply-in-underlying-scheme
+   (primitive-implementation proc) args))
+
+(define input-prompt ";;; Ввод M-Eval:")
+
+(define output-prompt ";;; Значение M-Eval:")
+
+(define (driver-loop)
+  (prompt-for-input input-prompt)
+  (let ((input (read)))
+    (let ((output (eval input the-global-environment)))
+      (announce-output output-prompt)
+      (user-print output)))
+  (driver-loop))
+
+(define (prompt-for-input string)
+  (newline) (newline) (display string) (newline))
+
+(define (announce-output string)
+  (newline) (display string) (newline))
+
+(define (user-print object)
+  (if (compound-procedure? object)
+      (display (list 'compound-procedure
+                     (procedure-parameters object)
+                     (procedure-body object)
+                     '<procedure-env>))
+      (display object)))
+
+#|
++-------------------------------+
 Examples
 +-------------------------------+
 |#
 
-(define global-env (extend-environment '() '() the-empty-environment))
-(newline) (display (eval 42 global-env))  ;; -> 42
-(newline) (display (eval "Hello, world!" global-env))  ;; -> "Hello, world!"
+(driver-loop)
 
-(eval '(define x 10) global-env)
-(newline) (display (eval 'x global-env)) ;; -> 10
-(eval '(set! x 20) global-env)
-(newline) (display (eval 'x global-env))  ;; -> 20
+; ;;; Ввод M-Eval:
+; (define (append x y)
+;   (if (null? x)
+;       y
+;       (cons (car x) (append (cdr x) y))))
+; ;;; Значение M-Eval: ok
+
+; ;;; Ввод M-Eval:
+; (append '(a b c) '(d e f))
+; ;;; Значение M-Eval: (a b c d e f)
+
+; (define global-env (extend-environment '() '() the-empty-environment))
+(newline) (display (eval 42 the-global-environment))  ;; -> 42
+(newline) (display (eval "Hello, world!" the-global-environment))  ;; -> "Hello, world!"
+
+; (eval '(define x 10) global-env)
+; (newline) (display (eval 'x global-env)) ;; -> 10
+; (eval '(set! x 20) global-env)
+; (newline) (display (eval 'x global-env))  ;; -> 20
 
 ;Unbound variable -- LOOKUP-VARIABLE-VALUE +
 ; (eval '(begin 
