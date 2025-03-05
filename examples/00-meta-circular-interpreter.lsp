@@ -22,7 +22,6 @@ Environment operations
   (set-cdr! frame (cons val (cdr frame))))
 
 (define (extend-environment vars vals base-env)
-  (newline) (display "I was in extend-environment")
   (if (= (length vars) (length vals))
       (cons (make-frame vars vals) base-env)
       (if (< (length vars) (length vals))
@@ -353,13 +352,15 @@ Apply definition
 
 #|
 +-------------------------------+
-Environment setup: 4.1.4
+Environment setup
 +-------------------------------+
 |#
 
-; error is here:
 (define primitive-procedures
-  (list (list 'car car)))
+  (list (list '+ +) 
+        (list '- -)
+        (list '* *)
+        (list '/ /)))
 
 (define primitive-procedure-names (map car primitive-procedures))
 
@@ -367,14 +368,10 @@ Environment setup: 4.1.4
   (map (lambda (proc) (list 'primitive (cadr proc)))
        primitive-procedures))
 
-
-
-
 (define (setup-environment)
-  (newline) (display "I was in setup-environment!")
   (let ((initial-env
-         (extend-environment (primitive-procedure-names)
-                             (primitive-procedure-objects)
+         (extend-environment primitive-procedure-names
+                             primitive-procedure-objects
                              the-empty-environment)))
     (define-variable! 'true true initial-env)
     (define-variable! 'false false initial-env)
@@ -382,12 +379,9 @@ Environment setup: 4.1.4
 
 (define the-global-environment (setup-environment))
 
-(define (primitive-procedure? proc)
-  (tagged-list? proc 'primitive))
+(define (primitive-procedure? proc) (tagged-list? proc 'primitive))
 
-(define (primitive-implementation proc)
-  (cadr proc))
-
+(define (primitive-implementation proc) (cadr proc))
 
 (define (apply-primitive-procedure proc args)
   (apply-in-underlying-scheme
@@ -425,7 +419,7 @@ Examples
 +-------------------------------+
 |#
 
-(driver-loop)
+; (driver-loop)
 
 ; ;;; Ввод M-Eval:
 ; (define (append x y)
@@ -439,24 +433,24 @@ Examples
 ; ;;; Значение M-Eval: (a b c d e f)
 
 ; (define global-env (extend-environment '() '() the-empty-environment))
-(newline) (display (eval 42 the-global-environment))  ;; -> 42
-(newline) (display (eval "Hello, world!" the-global-environment))  ;; -> "Hello, world!"
+; (newline) (display (eval 42 the-global-environment))  ;; -> 42
+; (newline) (display (eval "Hello, world!" the-global-environment))  ;; -> "Hello, world!"
 
-; (eval '(define x 10) global-env)
-; (newline) (display (eval 'x global-env)) ;; -> 10
-; (eval '(set! x 20) global-env)
-; (newline) (display (eval 'x global-env))  ;; -> 20
+; (eval '(define x 10) the-global-environment)
+; (newline) (display (eval 'x the-global-environment)) ;; -> 10
+; (eval '(set! x 20) the-global-environment)
+; (newline) (display (eval 'x the-global-environment))  ;; -> 20
 
-;Unbound variable -- LOOKUP-VARIABLE-VALUE +
+;Unbound variable: apply-in-underlying-scheme
 ; (eval '(begin 
 ;          (define y 2) 
 ;          (set! y (+ y 3)) 
-;          y) global-env)
-; ;; -> 5
+;          y) the-global-environment)
+;; -> 5
 
-; Unbound variable -- LOOKUP-VARIABLE-VALUE *
-; (eval '(define (square x) (* x x)) global-env)
-; (newline) (display (eval '(square 5) global-env))  ;; -> 25
+; Unbound variable: apply-in-underlying-scheme
+; (eval '(define (square x) (* x x)) the-global-environment)
+; (newline) (display (eval '(square 5) the-global-environment))  ;; -> 25
 
 ; Unbound variable -- LOOKUP-VARIABLE-VALUE <
 ; (eval '(define (abs x) (if (< x 0) (- x) x)) global-env)
