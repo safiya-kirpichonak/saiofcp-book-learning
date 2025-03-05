@@ -10,4 +10,5 @@
 01.03.2025: -
 02.03.2025: -
 03.03.2025: read 4.1.6, 4.1.7
-03.03.2025: fixing "meta-circular-interpreter"
+04.03.2025: fixing "meta-circular-interpreter"
+05.03.2025: read 4.2, 4.2.1, fixing "meta-circular-interpreter"
