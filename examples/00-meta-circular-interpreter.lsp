@@ -357,7 +357,13 @@ Environment setup
 |#
 
 (define primitive-procedures
-  (list (list '+ +) 
+  (list (list 'car car)
+        (list 'cdr cdr)
+        (list 'cons cons)
+        (list 'null? null?)
+        (list '> >)
+        (list '< <)
+        (list '+ +) 
         (list '- -)
         (list '* *)
         (list '/ /)))
@@ -383,13 +389,14 @@ Environment setup
 
 (define (primitive-implementation proc) (cadr proc))
 
+; Error here: ;Unknown procedure -- APPLY #[compiled-procedure 12 ("list" #x5) #x1c #x10f61d9c4]
 (define (apply-primitive-procedure proc args)
   (apply-in-underlying-scheme
    (primitive-implementation proc) args))
 
-(define input-prompt ";;; Ввод M-Eval:")
+(define input-prompt ";;; Input M-Eval:")
 
-(define output-prompt ";;; Значение M-Eval:")
+(define output-prompt ";;; Result M-Eval:")
 
 (define (driver-loop)
   (prompt-for-input input-prompt)
@@ -419,18 +426,33 @@ Examples
 +-------------------------------+
 |#
 
-; (driver-loop)
+(driver-loop)
+#|
+So, I feel so stupid. I thought that I need to write program and
+just run it, but no, I (and you if you check this code) actually 
+need to write expressions in the console. Hoverer there is still error.
 
-; ;;; Ввод M-Eval:
-; (define (append x y)
-;   (if (null? x)
-;       y
-;       (cons (car x) (append (cdr x) y))))
-; ;;; Значение M-Eval: ok
++----------+
+Example 1
++----------+
+;;; Input M-Eval:
+(define (append x y) (if (null? x) y (cons (car x) (append (cdr x) y))))
 
-; ;;; Ввод M-Eval:
-; (append '(a b c) '(d e f))
-; ;;; Значение M-Eval: (a b c d e f)
+;;; Result M-Eval: ok
+(append '(a b c) '(d e f))
+
+;;; Result M-Eval: 
+(a b c d e f)
+|#
+
+
+
+
+
+
+
+
+
 
 ; (define global-env (extend-environment '() '() the-empty-environment))
 ; (newline) (display (eval 42 the-global-environment))  ;; -> 42
